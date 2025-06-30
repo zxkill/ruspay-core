@@ -1,0 +1,62 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:17.5
+        env:
+          POSTGRES_USER: rususer
+          POSTGRES_PASSWORD: secret
+          POSTGRES_DB: ruspay
+        ports: [5432:5432]
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: 5432
+      DB_DATABASE: ruspay
+      DB_USERNAME: rususer
+      DB_PASSWORD: secret
+      YOO_SHOP_ID: test_shop
+      YOO_SECRET: test_secret
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.4
+
+      - name: Prepare Laravel cache dir
+        run: |
+          mkdir -p api/bootstrap/cache
+          chmod -R 777 api/bootstrap/cache
+
+      - name: Install dependencies
+        run: |
+          cd api
+          cp .env.example .env
+          php -r "file_put_contents('.env', str_replace([
+            'DB_HOST=postgres', 'DB_DATABASE=laravel', 'DB_USERNAME=root', 'DB_PASSWORD='
+          ], [
+            'DB_HOST=127.0.0.1', '${{ env.DB_DATABASE }}', '${{ env.DB_USERNAME }}', '${{ env.DB_PASSWORD }}'
+          ], file_get_contents('.env')));"
+          composer install
+          php artisan key:generate
+          php artisan migrate --force
+
+      - name: Run tests
+        run: |
+          cd api
+          php artisan test

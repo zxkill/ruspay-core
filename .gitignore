@@ -1,0 +1,44 @@
+# ─── IDE ─────────────────────────────
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# ─── Laravel ─────────────────────────
+/api/vendor/
+/api/node_modules/
+/api/public/storage
+/api/storage/*
+!/api/storage/app
+!/api/storage/framework
+!/api/storage/logs
+/api/bootstrap/cache
+/api/.env
+/api/.phpunit.result.cache
+/api/homestead.yaml
+/api/homestead.json
+/api/*.log
+/api/public/hot
+/api/public/mix-manifest.json
+/api/public/build
+
+# ─── Docker / Database ──────────────
+docker/postgres/data/
+docker/nginx/logs/
+*.pid
+*.sock
+
+# ─── OS / Misc ──────────────────────
+.DS_Store
+Thumbs.db
+*.sqlite
+*.sqlite3
+*.bak
+*.tmp
+*.swp
+*.zip
+*.tgz
+
+# ─── Logs ───────────────────────────
+*.log
+logs/
