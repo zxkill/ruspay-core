@@ -61,9 +61,9 @@ $ curl -X POST http://localhost:8080/api/v1/payments \
 
 | Слой         | Технология                               |
 | ------------ | ---------------------------------------- |
-| Framework    | **Laravel 11** (REST / GraphQL)          |
+| Framework    | **Laravel 12** (REST / GraphQL)          |
 | Payments SDK | Omnipay 3 + YooKassa driver              |
-| Database     | PostgreSQL 15                            |
+| Database     | PostgreSQL 17.5                           |
 | Runtime      | php:8.4‑fpm (pdo, pgsql, opcache)        |
 | Proxy        | nginx\:alpine                            |
 | CI           | GitHub Actions (lint, PHPUnit, coverage) |
