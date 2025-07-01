@@ -7,7 +7,11 @@ until pg_isready -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USERNAME"; do
 done
 echo "✅ Postgres is up"
 
-composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction --no-progress
+if [ "$APP_ENV" = "production" ]; then
+    composer install --no-dev --optimize-autoloader --no-interaction
+  else
+    composer install --optimize-autoloader --no-interaction
+  fi
 
 php artisan migrate --force
 
